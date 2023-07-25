@@ -10,7 +10,7 @@ def menu():
         print("3. generar pdf")
         print("4. generar QR")
         print("0. Salir")
-        opcion = int(input("elije una opcionn"))
+        opcion = int(input("elije una opcion"))
         if(opcion==1):
            pedirDatos()
         elif(opcion==2):

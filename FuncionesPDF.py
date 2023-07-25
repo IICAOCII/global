@@ -4,9 +4,14 @@ from reportlab.lib.pagesizes import A4, letter
 ruta = "C:/Users/Lenovo/Desktop/prueba funciones/prubea funciones/"
 nombreArchivo = ruta + "reporteGlobal.pdf"
 
-def generarPDF():
+def generarPDF(listaNombres, listaEdades):
     c = canvas.Canvas(nombreArchivo)
-    c.drawString(200,600,"hola desde una funcion")
+    xInicial = 200
+    yInicial = 700
+    for i in range(len(listaNombres)):
+        c.drawString(xInicial,yInicial,"hoa desde una funcion ")
+        yInicial = yInicial -20 
     c.save()
+    print("reporte generado-----------------")
 
 
