@@ -1,0 +1,12 @@
+def listarProductos():
+    print("lista de productos")
+    print("1. coca cola")
+    print("2. cheetos")
+    print("3. maruchan")
+    print("4. palomitas")
+    print("5. gomitas")
+    print("6. fruta")
+    print("7. verdura")
+    print("8. helado")
+    print("9. papel higienico") 
+    print("10. gansito ") 
