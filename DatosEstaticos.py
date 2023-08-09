@@ -1,51 +1,180 @@
-def listarProductos():
-    print("lista de productos")
-    print("1. coca cola")
-    print("2. cheetos")
-    print("3. maruchan")
-    print("4. palomitas")
-    print("5. gomitas")
-    print("6. fruta")
-    print("7. verdura")
-    print("8. helado")
-    print("9. papel higienico") 
-    print("10. gansito ") 
-
-def listaIngredientes():
-    print("1-peperoni")
-    print("2-champiñones")
-    print("3-chorizo")
-    print("4-jamon")
-    print("5-piña")
-    print("6-tocino")
-    print("7-salchica")
-    print("8-pimiento verde")
-    print("9-aceitunas")
-    print("10-salami")
-    print("9-cebolla")
-    print("10-jitomate")
-    print("11-extra queso")
-    print("12-atun")
-    print("13-ajonjoli")
-    print("14-moztaza")
-    print("15-aguacate")
-    print("16-jalapeños")
-    print("17-pera")
-    print("18-pollo")
-    print("19-frijol")
-    print("20-arandanos")
-    print("21-arrachera")
-    print("22-mozarela")
-    print("23-gouda")
-    print("24-carne molida")
-    print("25-maiz")
-    print("")
+listaBebidasgrandes = [
+    "1. coca cola",
+    "2. fanta",
+    "3. 7up",
+    "4. jarrito (piña)",
+    "5. jarrito (tuti frutti)",
+    "6. jarrito (mandarina)",
+    "7. jarrito (tamarindo)",
+    "8. pepsi",
+    "9. sidral",
+    "10. sprite"]
+listaBebidasPequeñas = [
+    "11. delaware",
+    "12. pepsi",
+    "13. DrPepper",
+    "14. fresca",
+    "15. sidral",
+    "16. coca cola",
+    "17. jumex",
+    "18. boing(mango)",
+    "19. boing(guayaba)",
+    "20.fanta"]
 
 
-def listaTamanos():
-    print("1-familiar")
-    print("2-grande")
-    print("3-mediana")
-    print("4-chica")
-    print("5-mini pizza")
-    print("6-cuadrada") 
+
+lista_Precios_BebidasGrandes = [
+    
+    45,    # Precio de coca cola
+    27,    # Precio de fanta
+    36,    # Precio de 7up
+    32,    # Precio de jarrito (piña)
+    32,    # Precio de jarrito (tuti frutti)
+    32,    # Precio de jarrito (mandarina)
+    32,    # Precio de jarrito (tamarindo)
+    38,    # Precio de pepsi
+    37,    # Precio de sidral
+    37     # Precio de sprite
+]
+
+# Lista de precios de bebidas pequeñas
+lista_Precios_BebidasPequeñas = [
+    
+    15,     # Precio de delaware
+    15,     # Precio de pepsi
+    16.50,  # Precio de DrPepper
+    16,     # Precio de fresca
+    16,     # Precio de sidral
+    17,     # Precio de coca cola (dieta)
+    13,     # Precio de jumex
+    13.50,  # Precio de boing(mango)
+    13.50,   # Precio de boing(guayaba)
+    16      # precio fanta 
+
+]
+
+def listaBebidas():
+    listaBebidasgrandes,listaBebidasPequeñas
+
+def listaComplementos():
+    return[
+    "1-palitos de pan",
+    "2-nuggets",
+    "3-bonelees diablo ",
+    "4-bonelees mango",
+    "5-bonelees bufalo",
+    "6-bonelees BBQ",
+    "7-bonelees chicago",
+    "8-bonelees california",
+    "9-bonelees vegana",
+    "10-bonelees habanero",
+    "11-bonelees chipotle",
+    "12-bonelees BBQ mango",
+    "13-ensalada griega",
+    "14-ensalada de pasta ",
+    "15-ensalada de papa ",
+    "16-ensalda mixta ",
+    "17-ensalada caprese",
+    "18-ensalada waldorf",
+    "19-ensalada rusa ",
+    "20-ensalada de col",
+    ]
+    
+
+
+def listaRecetas():
+    return[
+    "1-hawaina",
+    "2-peperoni",
+    "3-carnes frias",
+    "3-mexicana",
+    "4-champiñones",
+    "5-margarita ",
+    "6-cuatro quesos",
+    "7-cuatro estaciones",
+    "8-marinara",
+    "9-napolitana",
+    "10-neoyorquina",
+    "11-fugazza",
+    "12-pollo",
+    "13-carbonara",
+    "14-barbacoa",
+    "15-prosciutto ",
+    "16-calzone",
+    "17-caprichosa",
+    "18-pizza de pera ",
+    "19-anchoas",
+    "20-salmon ",
+    "21-caprese",
+    "22-pizza blanca ",
+    "23-BBQ",
+    "24-vegetariana",
+    "25-libre de gluten",
+    "26-maltesa",
+    "27-atun",
+    "28-griega",
+    "29-saint louis",
+    "30-stromboli"]
+
+def listacombos():
+    return[
+    "1-Combo familiar",
+    "2-Combo mini pizza",
+    "3-Combo cuadrada ",
+    "4-Combo alitas",
+    "5-Combo ensaldas",]
+
+
+
+def obtener_lista_ingredientes():
+    return [
+    "peperoni",
+    "champiñones",
+    "chorizo",
+    "jamon",
+    "piña",
+    "tocino",
+    "salchica",
+    "pimiento verde",
+    "aceitunas",
+    "salami",
+    "cebolla",
+    "jitomate",
+    "extra queso",
+    "atun",
+    "ajonjoli",
+    "moztaza",
+    "aguacate",
+    "jalapeños",
+    "pera",
+    "pollo",
+    "frijol",
+    "arandanos",
+    "arrachera",
+    "mozarela",
+    "gouda",
+    "carne molida",
+    "maiz",
+    "albahaca",
+    "anchoas",
+    "salmon",
+    "bistec",
+    "calabaza"]
+    
+def obtener_lista_Tamanos():
+    return[
+    "chica",
+    "mediana",
+    "grande",
+    "familiar",
+    "mini pizza (docena)",
+    "cuadrada"]
+
+lista_Precios_Tamanos = [
+    200,
+    275,
+    305,
+    329,
+    305,
+    375
+]

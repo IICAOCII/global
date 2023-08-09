@@ -1,4 +1,4 @@
 
 from FuncionesGenerales import *
 
-menu()
+menuPedido()

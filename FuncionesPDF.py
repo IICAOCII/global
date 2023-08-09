@@ -5,6 +5,7 @@ import locale
 locale.setlocale(locale.LC_ALL,'')
 ruta = "C:/Users/Lenovo/Desktop/prueba funciones/prubea funciones/"
 nombreQR = ruta + "miQR.png"
+
 def generarPDF(listaNombres, listaEdades):
     fecha_actual = datetime.datetime.now()
     nombreArchivo = ruta + "reporteGlobal_"+fecha_actual.strftime('%d_%m_%y_%H_%M_%S')+".pdf"
