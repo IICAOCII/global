@@ -1,5 +1,5 @@
 from FuncionesPDF import * 
-import random
+
 from DatosEstaticos import *
 
 listaNombres = []
@@ -11,6 +11,7 @@ listaTamanos = []
 listaPrecios = []
 listaBebidasElegidas = []
 listaComplementosElegidos = []
+tipo_pedido = None
 
 lista_Precios_Tamanos = [
     200,
@@ -29,6 +30,7 @@ def mostrarIngredientes():
         print(f"{i}. {ingrediente}")
 
 def Personalizada():
+    precio_complemento = 70  
     nombre_cliente = input("Ingrese el nombre del cliente: ")
     correo_cliente = input("Ingrese el correo electrónico del cliente: ")
     direccion_cliente = input("Ingrese la dirección del cliente: ")
@@ -51,12 +53,6 @@ def Personalizada():
 
     listaPizzasPersonalizadas.append(ingredientes_elegidos)
     
-    bebidas_elegidas = []
-    cantidades_bebidas = []
-    complementos_elegidos = []
-    cantidades_complementos = []
-    listaPizzasPersonalizadas.append(ingredientes_elegidos)
-
     print("\nLista de tamaños disponibles:")
     for i, tamano in enumerate(obtener_lista_Tamanos(), 1):
         precio = lista_Precios_Tamanos[i - 1]
@@ -125,6 +121,7 @@ def Personalizada():
             if 1 <= opcion_complemento <= 20:
                 complemento_elegido = listaComplementos()[opcion_complemento - 1]
                 cantidad_complemento = int(input("Elija la cantidad que desea: "))
+                precio_complemento =70
                 complementos_elegidos.append([complemento_elegido, cantidad_complemento, precio_complemento * cantidad_complemento])
                 cantidades_complementos.append(cantidad_complemento)
 
@@ -150,13 +147,15 @@ def Personalizada():
     if complementos_elegidos:
         print("\nComplementos elegidos:")
         for complemento, cantidad in zip(complementos_elegidos, cantidades_complementos):
-            precio_complemento = 70
             print(f"{complemento} - Cantidad: {cantidad} - Precio: {precio_complemento * cantidad}")
 
     print("Guardado")
+    print("pedido generado con exito para cliente", nombre_cliente)
+    tipo_pedido = "Personalizada"
 
     
 def recetas():
+    precio_complemento = 70  
     nombre_cliente = input("Ingrese el nombre del cliente: ")
     correo_cliente = input("Ingrese el correo electrónico del cliente: ")
     direccion_cliente = input("Ingrese la dirección del cliente: ")
@@ -179,13 +178,6 @@ def recetas():
     
     listaRecetasElegidas.append(receta_elegida)
 
-
-    bebidas_elegidas = []
-    cantidades_bebidas = []
-    complementos_elegidos = []
-    cantidades_complementos = []
-
-    listaRecetasElegidas.append(receta_elegida)
 
     print("\nLista de tamaños disponibles:")
     for i, tamano in enumerate(obtener_lista_Tamanos(), 1):
@@ -252,6 +244,7 @@ def recetas():
             if 1 <= opcion_complemento <= 20:
                 complemento_elegido = listaComplementos()[opcion_complemento - 1]
                 cantidad_complemento = int(input("Elija la cantidad que desea: "))
+                precio_complemento = 70
                 complementos_elegidos.append([complemento_elegido, cantidad_complemento, precio_complemento * cantidad_complemento])
                 cantidades_complementos.append(cantidad_complemento)
             else:
@@ -280,52 +273,43 @@ def recetas():
             print(f"{complemento} - Cantidad: {cantidad} - Precio: {precio_complemento * cantidad}")
 
     print("Guardado")
+    print("Pedido registrado con éxito para", nombre_cliente)
+    tipo_pedido = "receta"
 
 def imprimirPedido(nombre_cliente):
     if nombre_cliente in listaNombres:
         indice_cliente = listaNombres.index(nombre_cliente)
-        print("\nDetalles del pedido de", nombre_cliente)
-        print("Correo electrónico:", listaCorreos[indice_cliente])
-        print("Dirección:", listaDirecciones[indice_cliente])
+        print("\ndetalles del pedido de", nombre_cliente)
+        print("correo electronico: ", listaDirecciones[indice_cliente])
+        print("Direccion: ",listaDirecciones[indice_cliente])
+    
+    if tipo_pedido == "personalizada":
+        print("\nDetalles de la pizza personalizada: ")
+        print("<Ingredientes elegidos:",",".join(listaPizzasPersonalizadas[indice_cliente]))
+        print("Tamaño elegido:",listaTamanos[indice_cliente])
+        print("precio:",listaPrecios[indice_cliente])
+    
+    elif tipo_pedido == "receta":
+        print("\ndetalles de la receta:")
+        print("Receta elegida:",listaRecetasElegidas[indice_cliente])
+        print("Tamaño elegido:",listaTamanos[indice_cliente])
+        print("precio:",listaPrecios[indice_cliente])
 
-        # Inicializar las listas de bebidas y complementos si no existen
-        if indice_cliente >= len(listaBebidasElegidas):
-            listaBebidasElegidas.append([])
-
-        if indice_cliente >= len(listaComplementosElegidos):
-            listaComplementosElegidos.append([])
-
-        # Verificar si el cliente tiene una pizza personalizada
-        if listaPizzasPersonalizadas and indice_cliente < len(listaPizzasPersonalizadas):
-            print("\nDetalles de la pizza personalizada:")
-            print("Ingredientes elegidos:", ", ".join(listaPizzasPersonalizadas[indice_cliente]))
-            print("Tamaño elegido:", listaTamanos[indice_cliente])
-            print("Precio:", listaPrecios[indice_cliente])
-
-        # Verificar si el cliente tiene una receta elegida
-        if listaRecetasElegidas and indice_cliente < len(listaRecetasElegidas):
-            print("\nDetalles de la receta:")
-            print("Receta elegida:", listaRecetasElegidas[indice_cliente])
-            print("Tamaño elegido:", listaTamanos[indice_cliente])
-            print("Precio:", listaPrecios[indice_cliente])
-
-        # Imprimir bebidas elegidas
-        # Imprimir bebidas elegidas
-        if listaBebidasElegidas and indice_cliente < len(listaBebidasElegidas):
+    if indice_cliente < len(listaBebidasElegidas):
             print("\nBebidas elegidas:")
-        for bebida_info in listaBebidasElegidas[indice_cliente]:
-            bebida, cantidad, precio_total = bebida_info
-            print(bebida, "- Cantidad:", cantidad, "- Precio:", precio_total)
+            for bebida_info in listaBebidasElegidas[indice_cliente]:
+                bebida, cantidad, precio_total = bebida_info
+                print(bebida, "- Cantidad:", cantidad, "- Precio:", precio_total)
 
-# Imprimir complementos elegidos
-        if listaComplementosElegidos and indice_cliente < len(listaComplementosElegidos):
+        # Imprimir complementos elegidos
+    if indice_cliente < len(listaComplementosElegidos):
             print("\nComplementos elegidos:")
-        for complemento_info in listaComplementosElegidos[indice_cliente]:
-            complemento, cantidad, precio_total = complemento_info
-            print(complemento, "- Cantidad:", cantidad, "- Precio:", precio_total)
-
+            for complemento_info in listaComplementosElegidos[indice_cliente]:
+                complemento, cantidad, precio_total = complemento_info
+                print(complemento, "- Cantidad:", cantidad, "- Precio:", precio_total)
     else:
         print("\nEl cliente no se encuentra en la lista de nombres.")
+
 
 
 

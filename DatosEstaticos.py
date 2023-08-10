@@ -1,3 +1,5 @@
+import random
+
 listaBebidasgrandes = [
     "1. coca cola",
     "2. fanta",
@@ -115,6 +117,11 @@ def listaRecetas():
     "28-griega",
     "29-saint louis",
     "30-stromboli"]
+
+def generar_codigo_rastreo():
+    return str(random.randint(1000000, 9999999))
+
+no_pedido = generar_codigo_rastreo()
 
 def listacombos():
     return[
