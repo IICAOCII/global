@@ -1,6 +1,10 @@
 from FuncionesPDF import * 
-
-from DatosEstaticos import *
+from reportlab.pdfgen import canvas
+from FuncionesPDF import generarPDF
+from DatosEstaticos import (listaBebidasgrandes, listaBebidasPequeñas, lista_Precios_BebidasGrandes,
+    lista_Precios_BebidasPequeñas, listaComplementos, listaRecetas,
+    obtener_lista_ingredientes, obtener_lista_Tamanos, lista_Precios_Tamanos,
+    generar_codigo_rastreo,listacombos,random)
 
 listaNombres = []
 listaCorreos = []
@@ -11,6 +15,7 @@ listaTamanos = []
 listaPrecios = []
 listaBebidasElegidas = []
 listaComplementosElegidos = []
+listaIngredientesElegidos = []
 tipo_pedido = None
 
 lista_Precios_Tamanos = [
@@ -29,7 +34,7 @@ def mostrarIngredientes():
     for i, ingrediente in enumerate(lista_ingredientes, 1):
         print(f"{i}. {ingrediente}")
 
-def Personalizada():
+def Personalizada(tipo_pedido):
     precio_complemento = 70  
     nombre_cliente = input("Ingrese el nombre del cliente: ")
     correo_cliente = input("Ingrese el correo electrónico del cliente: ")
@@ -38,10 +43,14 @@ def Personalizada():
     listaNombres.append(nombre_cliente)
     listaCorreos.append(correo_cliente)
     listaDirecciones.append(direccion_cliente)
+    listaBebidasElegidas.append([])
+    listaComplementosElegidos.append([])
+    listaIngredientesElegidos.append([])
 
     print("Lista de ingredientes (escoje tres para armar tu pizza personalizada):")
     mostrarIngredientes()
 
+    mostrarIngredientes()
     ingredientes_elegidos = []
     for _ in range(3):
         opcion = int(input("Elija un ingrediente (1-30): "))
@@ -51,9 +60,12 @@ def Personalizada():
         else:
             print("Opción inválida. Intente de nuevo.")
 
-    listaPizzasPersonalizadas.append(ingredientes_elegidos)
+    listaIngredientesElegidos.append(ingredientes_elegidos)
+
+    
     
     print("\nLista de tamaños disponibles:")
+    
     for i, tamano in enumerate(obtener_lista_Tamanos(), 1):
         precio = lista_Precios_Tamanos[i - 1]
         print(f"{i}. {tamano} - Precio: {precio}")
@@ -151,10 +163,10 @@ def Personalizada():
 
     print("Guardado")
     print("pedido generado con exito para cliente", nombre_cliente)
-    tipo_pedido = "Personalizada"
+
 
     
-def recetas():
+def recetas(tipo_pedido):
     precio_complemento = 70  
     nombre_cliente = input("Ingrese el nombre del cliente: ")
     correo_cliente = input("Ingrese el correo electrónico del cliente: ")
@@ -163,6 +175,8 @@ def recetas():
     listaNombres.append(nombre_cliente)
     listaCorreos.append(correo_cliente)
     listaDirecciones.append(direccion_cliente)
+    listaBebidasElegidas.append([])
+    listaComplementosElegidos.append([])
 
     print("Lista de recetas disponibles:")
     for i, receta in enumerate(listaRecetas(), 1):
@@ -274,43 +288,85 @@ def recetas():
 
     print("Guardado")
     print("Pedido registrado con éxito para", nombre_cliente)
-    tipo_pedido = "receta"
-
-def imprimirPedido(nombre_cliente):
-    if nombre_cliente in listaNombres:
-        indice_cliente = listaNombres.index(nombre_cliente)
-        print("\ndetalles del pedido de", nombre_cliente)
-        print("correo electronico: ", listaDirecciones[indice_cliente])
-        print("Direccion: ",listaDirecciones[indice_cliente])
     
-    if tipo_pedido == "personalizada":
-        print("\nDetalles de la pizza personalizada: ")
-        print("<Ingredientes elegidos:",",".join(listaPizzasPersonalizadas[indice_cliente]))
-        print("Tamaño elegido:",listaTamanos[indice_cliente])
-        print("precio:",listaPrecios[indice_cliente])
-    
-    elif tipo_pedido == "receta":
-        print("\ndetalles de la receta:")
-        print("Receta elegida:",listaRecetasElegidas[indice_cliente])
-        print("Tamaño elegido:",listaTamanos[indice_cliente])
-        print("precio:",listaPrecios[indice_cliente])
 
-    if indice_cliente < len(listaBebidasElegidas):
-            print("\nBebidas elegidas:")
-            for bebida_info in listaBebidasElegidas[indice_cliente]:
-                bebida, cantidad, precio_total = bebida_info
-                print(bebida, "- Cantidad:", cantidad, "- Precio:", precio_total)
+def imprimirDetallesPedido(tipo_pedido):
+    if not listaNombres:
+        print("No hay usuarios registrados.")
+        return
 
-        # Imprimir complementos elegidos
-    if indice_cliente < len(listaComplementosElegidos):
-            print("\nComplementos elegidos:")
-            for complemento_info in listaComplementosElegidos[indice_cliente]:
-                complemento, cantidad, precio_total = complemento_info
-                print(complemento, "- Cantidad:", cantidad, "- Precio:", precio_total)
+    print("Clientes registrados:")
+    for i, nombre in enumerate(listaNombres, 1):
+        print(f"{i}. {nombre}")
+
+    try:
+        numero_usuario = int(input("Ingrese el número de usuario para ver los detalles del pedido: ")) - 1
+        if 0 <= numero_usuario < len(listaNombres):
+            print("\nDatos del usuario:")
+            print(f"Nombre: {listaNombres[numero_usuario]}")
+            print(f"Correo: {listaCorreos[numero_usuario]}")
+            print(f"Dirección: {listaDirecciones[numero_usuario]}")
+
+            tipo_pedido_usuario = tipo_pedido[numero_usuario]
+            if tipo_pedido_usuario == "personalizada":
+                print("Elecciones de", listaNombres[numero_usuario])
+                print("Ingredientes elegidos:", ", ".join(listaPizzasPersonalizadas[numero_usuario]))
+                print("Tamaño elegido:", listaTamanos[numero_usuario])
+                print("Precio:", listaPrecios[numero_usuario])
+            elif tipo_pedido_usuario == "recetas":
+                print("Receta elegida:", listaRecetasElegidas[numero_usuario])
+                print("Tamaño elegido:", listaTamanos[numero_usuario])
+                print("Precio:", listaPrecios[numero_usuario])
+
+            if listaBebidasElegidas[numero_usuario]:
+                print("\nBebidas elegidas:")
+                for bebida, cantidad, precio_total in listaBebidasElegidas[numero_usuario]:
+                    print(f"{bebida} - Cantidad: {cantidad} - Precio: {precio_total}")
+
+            if listaComplementosElegidos[numero_usuario]:
+                print("\nComplementos elegidos:")
+                for complemento, cantidad, precio_total in listaComplementosElegidos[numero_usuario]:
+                    print(f"{complemento} - Cantidad: {cantidad} - Precio: {precio_total}")
+
+        else:
+            print("Número de usuario inválido.")
+    except ValueError:
+        print("Por favor, ingrese un número válido.")
+
+
+
+
+def imprimir_datos_usuario(numero_usuario):
+    if 1 <= numero_usuario <= len(listaNombres):
+        nombre = listaNombres[numero_usuario - 1]
+        correo = listaCorreos[numero_usuario - 1]
+        direccion = listaDirecciones[numero_usuario - 1]
+        tipo_pedido_usuario = tipo_pedido[numero_usuario -1]
+
+      
+        print("\nDatos del usuario:")
+        print(f"Nombre: {nombre}")
+        print(f"Correo: {correo}")
+        print(f"Dirección: {direccion}")
+
+        if tipo_pedido_usuario == "personalizada":
+            ingredientes = listaPizzasPersonalizadas[numero_usuario - 1]
+            print("Ingredientes elegidos:", ", ".join(ingredientes))
+        elif tipo_pedido == "recetas":
+            receta = listaRecetasElegidas[numero_usuario - 1]
+            print("Receta elegida:", receta)
+
+        if listaBebidasElegidas[numero_usuario - 1]:
+            print("Bebidas elegidas:")
+            for bebida, cantidad, precio_total in listaBebidasElegidas[numero_usuario -1]:
+                print(f"{bebida} - Cantidad: {cantidad} - Precio: {precio_total}")
+
+        if listaComplementosElegidos[numero_usuario - 1]:
+            print("Complementos elegidos:")
+            for complemento, cantidad, precio_total in listaComplementosElegidos[numero_usuario - 1]:
+                print(f"{complemento} - Cantidad: {cantidad} - Precio: {precio_total}")
     else:
-        print("\nEl cliente no se encuentra en la lista de nombres.")
-
-
+        print("Número de usuario inválido.")
 
 
 
@@ -318,22 +374,9 @@ def imprimirDatos():
     for i, nombre in enumerate(listaNombres, 1):
          print(f"{i}. {nombre} - NoCl: {generar_codigo_rastreo()}")
 
-def imprimirDetallesPedido():
-    if not listaNombres:
-        print("No hay clientes registrados en la lista.")
-        return
-
-    imprimirDatos()
-    opcion_cliente = int(input("Elija el número de cliente para ver los detalles del pedido: "))
-    if 1 <= opcion_cliente <= len(listaNombres):
-        nombre_cliente = listaNombres[opcion_cliente - 1]
-        imprimirPedido(nombre_cliente)
-    else:
-        print("Opción inválida.")
-
 
 def combos():
-    listacombos()
+   listacombos()
 
 def generar_codigo_rastreo():
     return str(random.randint(1000000, 9999999))
@@ -343,6 +386,7 @@ no_pedido = generar_codigo_rastreo()
 
 
 def menuPedido():
+    c = canvas.Canvas("nombre_del_archivo.pdf")  
     opcion = 1
     while opcion != 0:
         print("1. Pizza sencilla 3 ingredientes")
@@ -350,17 +394,42 @@ def menuPedido():
         print("3. Combos")
         print("4. lista clientes ")
         print("5. imprimir detalles de pedido por cliente")
+        print("6. generar pdf cliente ")
         print("0. Salir")
         opcion = int(input("Elije una opción: "))
         if opcion == 1:
-           Personalizada()
+           tipo_pedido = "personalizada"
+           Personalizada(tipo_pedido)
         elif opcion == 2:
-           recetas()
+           tipo_pedido = "receta"
+           recetas(tipo_pedido)
         elif opcion == 3:
             combos()
         elif opcion == 4:
             imprimirDatos()
         elif opcion ==5:
-            imprimirDetallesPedido()
-        elif opcion == 10:
-            generarPDF(listaNombres)
+            imprimirDetallesPedido(tipo_pedido)
+        elif opcion == 6:
+             numero_cliente = int(input("Elije el número de cliente para generar el PDF: ")) - 1
+             if 0 <= numero_cliente < len(listaNombres):
+                datos_cliente = {
+                    'nombre': listaNombres[numero_cliente],
+                    'direccion': listaDirecciones[numero_cliente],
+                    'correo': listaCorreos[numero_cliente]
+                }
+
+                tipo_pedido_cliente = tipo_pedido[numero_cliente]
+                datos_pedido_cliente = {
+                    'ingredientes': listaPizzasPersonalizadas[numero_cliente],
+                    'tamano': listaTamanos[numero_cliente],
+                    'bebidas': listaBebidasElegidas[numero_cliente],
+                    'complementos': listaComplementosElegidos[numero_cliente]
+                } if tipo_pedido_cliente == "personalizada" else {
+                    'receta': listaRecetasElegidas[numero_cliente],
+                    'tamano': listaTamanos[numero_cliente],
+                    'bebidas': listaBebidasElegidas[numero_cliente],
+                    'complementos': listaComplementosElegidos[numero_cliente]
+                }
+
+                generarPDF(c, ruta, nombreQR, datos_cliente, tipo_pedido_cliente, datos_pedido_cliente)
+        c.save()
